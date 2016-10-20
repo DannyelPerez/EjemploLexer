@@ -5,6 +5,12 @@
         EOF,
         ID,
         Digit,
-        PR_PRINT
+        PR_PRINT,
+        OP_SUM,
+        OP_SUB,
+        OP_MUL,
+        OP_DIV,
+        OP_EQU,
+        FN_STM
     }
 }

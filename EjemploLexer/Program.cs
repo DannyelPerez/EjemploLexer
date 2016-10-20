@@ -11,7 +11,8 @@ namespace EjemploLexer
     {
         static void Main(string[] args)
         {
-            var lex = new Lexer("cont cont1 12 print ");
+            var lex = new Lexer(@"cont = cont + 1;
+            cont2 = 0;");
             var currentToken = lex.GetNextToken();
             while (currentToken.Type != TokenTypes.EOF)
             {

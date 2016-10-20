@@ -8,12 +8,21 @@ namespace EjemploLexer
          private string _sourceCode;
          private int _currentPointer;
          private Dictionary<string, TokenTypes> _reserveWords;
+         private Dictionary<string, TokenTypes> _symbols;
         public Lexer(string sourceCode)
         {
             _sourceCode = sourceCode;
             _currentPointer = 0;
             _reserveWords = new Dictionary<string, TokenTypes>();
             _reserveWords.Add("print", TokenTypes.PR_PRINT);
+            _symbols = new Dictionary<string, TokenTypes>();
+            _symbols.Add("+", TokenTypes.OP_SUM);
+            _symbols.Add("-", TokenTypes.OP_SUB);
+            _symbols.Add("*", TokenTypes.OP_MUL);
+            _symbols.Add("/", TokenTypes.OP_DIV);
+            _symbols.Add("=", TokenTypes.OP_EQU);
+            _symbols.Add(";", TokenTypes.FN_STM);
+
 
         }
 
@@ -46,6 +55,12 @@ namespace EjemploLexer
                 lexeme += tmp;
                 _currentPointer++;
                 return GetDigit(lexeme);
+            }
+
+            if (_symbols.ContainsKey(tmp.ToString()))
+            {
+                _currentPointer++;
+                return new Token {Type = _symbols[tmp.ToString()],Lexeme = tmp.ToString()};
             }
 
             throw new SatanException("Nasty");
