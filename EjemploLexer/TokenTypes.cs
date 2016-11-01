@@ -11,6 +11,8 @@
         OP_MUL,
         OP_DIV,
         OP_EQU,
-        FN_STM
+        FN_STM,
+        Left_Par,
+        Right_Par
     }
 }
