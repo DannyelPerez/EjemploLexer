@@ -15,6 +15,7 @@ namespace EjemploLexer
             _currentPointer = 0;
             _reserveWords = new Dictionary<string, TokenTypes>();
             _reserveWords.Add("print", TokenTypes.PR_PRINT);
+            _reserveWords.Add("read", TokenTypes.PR_READ);
             _symbols = new Dictionary<string, TokenTypes>();
             _symbols.Add("+", TokenTypes.OP_SUM);
             _symbols.Add("-", TokenTypes.OP_SUB);

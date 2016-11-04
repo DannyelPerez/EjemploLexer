@@ -36,7 +36,7 @@ namespace EjemploLexer.Sintatico
         private void ListaSentencias()
         {
             //Lista_Sentencias->Sentencia Lista_Sentencias
-            if (_currenToken.Type == TokenTypes.ID || _currenToken.Type == TokenTypes.PR_PRINT)
+            if (_currenToken.Type == TokenTypes.ID || _currenToken.Type == TokenTypes.PR_PRINT ||_currenToken.Type == TokenTypes.PR_READ)
             {
                 Sentencia();
                 ListaSentencias();
@@ -74,7 +74,20 @@ namespace EjemploLexer.Sintatico
                     throw new Exception("Se esperaba un ;");
                 _currenToken = _lexer.GetNextToken();
                 Console.Write(expresionValor);
+            }//read expresion;
+            else if (_currenToken.Type == TokenTypes.PR_READ)
+            {
+                _currenToken = _lexer.GetNextToken();
+                if (_currenToken.Type != TokenTypes.ID)
+                    throw new Exception("Se esperaba un Id");
+                var lexemeId = _currenToken.Lexeme;
+                _variables[lexemeId]=int.Parse(Console.ReadLine());
+                _currenToken = _lexer.GetNextToken();
+                if (_currenToken.Type != TokenTypes.FN_STM)
+                    throw new Exception("Se esperaba un ;");
+                _currenToken = _lexer.GetNextToken();
             }
+
             else
             {
                 throw new Exception("Se esperaba un id o print");

@@ -13,6 +13,7 @@
         OP_EQU,
         FN_STM,
         Left_Par,
-        Right_Par
+        Right_Par,
+        PR_READ
     }
 }
