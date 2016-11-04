@@ -10,10 +10,12 @@ namespace EjemploLexer.Sintatico
     {
         private Lexer _lexer;
         private Token _currenToken;
+        private Dictionary<string, int> _variables;
         public Parser(Lexer lexer)
         {
             _lexer = lexer;
             _currenToken = lexer.GetNextToken();
+            _variables = new Dictionary<string, int>();
         }
 
 
@@ -52,23 +54,26 @@ namespace EjemploLexer.Sintatico
             //id = expresion ;
             if (_currenToken.Type == TokenTypes.ID)
             {
+                var lexemeid = _currenToken.Lexeme;
                 _currenToken = _lexer.GetNextToken();
                 if(_currenToken.Type!=TokenTypes.OP_EQU)
                     throw new Exception("Se esperaba = ");
                 _currenToken = _lexer.GetNextToken();
-                Expresion();
+                var expresionValor = Expresion();
                 if(_currenToken.Type!=TokenTypes.FN_STM)
                     throw  new Exception("Se esperaba un ;");
                 _currenToken = _lexer.GetNextToken();
+                _variables[lexemeid] = expresionValor;
 
             }//print expresion ;
             else if (_currenToken.Type == TokenTypes.PR_PRINT)
             {
                 _currenToken = _lexer.GetNextToken();
-                Expresion();
+                var expresionValor =Expresion();
                 if (_currenToken.Type != TokenTypes.FN_STM)
                     throw new Exception("Se esperaba un ;");
                 _currenToken = _lexer.GetNextToken();
+                Console.Write(expresionValor);
             }
             else
             {
@@ -76,90 +81,95 @@ namespace EjemploLexer.Sintatico
             }
         }
 
-        private void Expresion()
+        private int Expresion()
         {
-            Term();
-            ExpresionP();
+            var termValue = Term();
+            return ExpresionP(termValue);
         }
 
-        private void ExpresionP()
+        private int ExpresionP(int param)
         {
             //+term ExpresionP
             if (_currenToken.Type == TokenTypes.OP_SUM)
             {
                 _currenToken = _lexer.GetNextToken();
-                Term();
-                ExpresionP();
+                var termValue =Term();
+                return ExpresionP(param +termValue);
             }
             //-term ExpresionP
             else if (_currenToken.Type == TokenTypes.OP_SUB)
             {
                 _currenToken = _lexer.GetNextToken();
-                Term();
-                ExpresionP();
+                var termValue = Term();
+                return ExpresionP(param - termValue);
             }
             // Epsilon
             else
             {
-                
+                return param;
             }
         }
 
-        private void Term()
+        private int Term()
         {
-            Factor();
-            TermP();
+            var factorValue = Factor();
+            return TermP(factorValue);
         }
-        private void TermP()
+        private int TermP(int param)
         {
             //*Factor TermP
             if (_currenToken.Type == TokenTypes.OP_MUL)
             {
                 _currenToken = _lexer.GetNextToken();
-                Factor();
-                TermP();
+                var factorValue = Factor();
+                return TermP(param * factorValue);
             }
             // / Factor TermP
             else if (_currenToken.Type == TokenTypes.OP_DIV)
             {
                 _currenToken = _lexer.GetNextToken();
-                Factor();
-                TermP();
+                var factorValue = Factor();
+                return TermP(param / factorValue);
             }
             // Epsilon
             else
             {
-
+                return param;
             }
         }
 
-        private void Factor()
+        private int Factor()
         {
             if (_currenToken.Type == TokenTypes.ID)
             {
+                var lexeme = _currenToken.Lexeme;
                 _currenToken = _lexer.GetNextToken();
+                return _variables[lexeme];
 
             }
             else if (_currenToken.Type == TokenTypes.Digit)
             {
+                var numValor = int.Parse(_currenToken.Lexeme);
                 _currenToken = _lexer.GetNextToken();
+                return numValor;
 
             }
             else if (_currenToken.Type == TokenTypes.Left_Par)
             {
                 _currenToken = _lexer.GetNextToken();
-                Expresion();
-                if (_currenToken.Type == TokenTypes.Right_Par)
-                    _currenToken = _lexer.GetNextToken();
-                else
-                {
+
+                var expressionValor = Expresion();
+                if (_currenToken.Type != TokenTypes.Right_Par)
                     throw new Exception("Se esperaba )");
-                }
+
+                _currenToken = _lexer.GetNextToken();
+                return expressionValor;
             }
             else
             {
                 throw new Exception("Se esperaba un Factor");
             }
+
         }
 
     }

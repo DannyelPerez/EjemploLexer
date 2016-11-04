@@ -12,9 +12,9 @@ namespace EjemploLexer
     {
         static void Main(string[] args)
         {
-            var lex = new Lexer(@"cont = cont + 1;
-            cont2 = 0;
-            print;");
+            var lex = new Lexer(@"cont = 1;
+            cont2 = cont + 1;
+            print cont2*2;");
             Parser parser = new Parser(lex);
             parser.Parse();
             Console.ReadKey();
