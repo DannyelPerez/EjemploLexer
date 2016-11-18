@@ -16,7 +16,11 @@ namespace EjemploLexer
             read b;
             print a+b;");
             Parser parser = new Parser(lex);
-            parser.Parse();
+            var root = parser.Parse();
+            foreach (var statementNode in root)
+            {
+                statementNode.Interpret();
+            }
             Console.ReadKey();
 
         }

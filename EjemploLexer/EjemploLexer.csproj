@@ -47,6 +47,18 @@
     <Compile Include="Lexer.SatanException.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Semantico\Arbol\Expresion\BinaryOperatorNode.cs" />
+    <Compile Include="Semantico\Arbol\Expresion\DivNode.cs" />
+    <Compile Include="Semantico\Arbol\Expresion\ExxpressionNode.cs" />
+    <Compile Include="Semantico\Arbol\Expresion\IdNode.cs" />
+    <Compile Include="Semantico\Arbol\Expresion\MulNode.cs" />
+    <Compile Include="Semantico\Arbol\Expresion\NumberLiteralNode.cs" />
+    <Compile Include="Semantico\Arbol\Expresion\SubNode.cs" />
+    <Compile Include="Semantico\Arbol\Expresion\SumNode.cs" />
+    <Compile Include="Semantico\Arbol\Sentencia\AssignationNode.cs" />
+    <Compile Include="Semantico\Arbol\Sentencia\PrintNode.cs" />
+    <Compile Include="Semantico\Arbol\Sentencia\ReadNode.cs" />
+    <Compile Include="Semantico\Arbol\Sentencia\StatementNode.cs" />
     <Compile Include="Sintatico\Parser.cs" />
     <Compile Include="Token.cs" />
     <Compile Include="TokenTypes.cs" />
@@ -54,6 +66,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

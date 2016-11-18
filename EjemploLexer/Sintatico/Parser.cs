@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EjemploLexer.Semantico.Arbol.Expresion;
+using EjemploLexer.Semantico.Arbol.Sentencia;
 
 namespace EjemploLexer.Sintatico
 {
@@ -10,7 +12,7 @@ namespace EjemploLexer.Sintatico
     {
         private Lexer _lexer;
         private Token _currenToken;
-        private Dictionary<string, int> _variables;
+        public static Dictionary<string, int> _variables;
         public Parser(Lexer lexer)
         {
             _lexer = lexer;
@@ -19,37 +21,39 @@ namespace EjemploLexer.Sintatico
         }
 
 
-        public void Parse()
+        public List<StatementNode> Parse()
         {
-            Codigo();
+            var code = Codigo();
             if(_currenToken.Type!=TokenTypes.EOF)
                 throw new Exception("Se esperaba Eof");
-
+            return code;
         }
 
-        private void Codigo()
+        private List<StatementNode> Codigo()
         {
-            ListaSentencias();
-;
+            return ListaSentencias();
+ ;
         }
 
-        private void ListaSentencias()
+        private List<StatementNode> ListaSentencias()
         {
             //Lista_Sentencias->Sentencia Lista_Sentencias
             if (_currenToken.Type == TokenTypes.ID || _currenToken.Type == TokenTypes.PR_PRINT ||_currenToken.Type == TokenTypes.PR_READ)
             {
-                Sentencia();
-                ListaSentencias();
+                var statement = Sentencia();
+                var statementList = ListaSentencias();
+                statementList.Insert(0,statement);
+                return statementList;
             }
             //Lista_Sentencia->Epsilon
             else
             {
-                
+                return new List<StatementNode>();
             }
             
         }
 
-        private void Sentencia()
+        private StatementNode Sentencia()
         {
             //id = expresion ;
             if (_currenToken.Type == TokenTypes.ID)
@@ -63,7 +67,11 @@ namespace EjemploLexer.Sintatico
                 if(_currenToken.Type!=TokenTypes.FN_STM)
                     throw  new Exception("Se esperaba un ;");
                 _currenToken = _lexer.GetNextToken();
-                _variables[lexemeid] = expresionValor;
+                return new AssignationNode
+                {
+                    LeftValue = new IdNode {Name = lexemeid},
+                    RightValue = expresionValor
+                };
 
             }//print expresion ;
             else if (_currenToken.Type == TokenTypes.PR_PRINT)
@@ -73,7 +81,8 @@ namespace EjemploLexer.Sintatico
                 if (_currenToken.Type != TokenTypes.FN_STM)
                     throw new Exception("Se esperaba un ;");
                 _currenToken = _lexer.GetNextToken();
-                Console.Write(expresionValor);
+                
+                return new PrintNode {Value = expresionValor};
             }//read expresion;
             else if (_currenToken.Type == TokenTypes.PR_READ)
             {
@@ -81,11 +90,13 @@ namespace EjemploLexer.Sintatico
                 if (_currenToken.Type != TokenTypes.ID)
                     throw new Exception("Se esperaba un Id");
                 var lexemeId = _currenToken.Lexeme;
-                _variables[lexemeId]=int.Parse(Console.ReadLine());
+                
                 _currenToken = _lexer.GetNextToken();
                 if (_currenToken.Type != TokenTypes.FN_STM)
                     throw new Exception("Se esperaba un ;");
                 _currenToken = _lexer.GetNextToken();
+
+                return new ReadNode {Variable = new IdNode {Name = lexemeId} };
             }
 
             else
@@ -94,27 +105,27 @@ namespace EjemploLexer.Sintatico
             }
         }
 
-        private int Expresion()
+        private ExpressionNode Expresion()
         {
             var termValue = Term();
             return ExpresionP(termValue);
         }
 
-        private int ExpresionP(int param)
+        private ExpressionNode ExpresionP(ExpressionNode param)
         {
             //+term ExpresionP
             if (_currenToken.Type == TokenTypes.OP_SUM)
             {
                 _currenToken = _lexer.GetNextToken();
                 var termValue =Term();
-                return ExpresionP(param +termValue);
+                return ExpresionP(new SumNode {LeftOperand = param, RightOperand = termValue});
             }
             //-term ExpresionP
             else if (_currenToken.Type == TokenTypes.OP_SUB)
             {
                 _currenToken = _lexer.GetNextToken();
                 var termValue = Term();
-                return ExpresionP(param - termValue);
+                return ExpresionP(new SubNode {LeftOperand = param, RightOperand = termValue});
             }
             // Epsilon
             else
@@ -123,26 +134,26 @@ namespace EjemploLexer.Sintatico
             }
         }
 
-        private int Term()
+        private ExpressionNode Term()
         {
             var factorValue = Factor();
             return TermP(factorValue);
         }
-        private int TermP(int param)
+        private ExpressionNode TermP(ExpressionNode param)
         {
             //*Factor TermP
             if (_currenToken.Type == TokenTypes.OP_MUL)
             {
                 _currenToken = _lexer.GetNextToken();
                 var factorValue = Factor();
-                return TermP(param * factorValue);
+                return TermP(new MulNode {LeftOperand = param, RightOperand = factorValue});
             }
             // / Factor TermP
             else if (_currenToken.Type == TokenTypes.OP_DIV)
             {
                 _currenToken = _lexer.GetNextToken();
                 var factorValue = Factor();
-                return TermP(param / factorValue);
+                return TermP(new DivNode {LeftOperand = param, RightOperand = factorValue});
             }
             // Epsilon
             else
@@ -151,20 +162,20 @@ namespace EjemploLexer.Sintatico
             }
         }
 
-        private int Factor()
+        private ExpressionNode Factor()
         {
             if (_currenToken.Type == TokenTypes.ID)
             {
                 var lexeme = _currenToken.Lexeme;
                 _currenToken = _lexer.GetNextToken();
-                return _variables[lexeme];
+                return new IdNode {Name = lexeme};
 
             }
             else if (_currenToken.Type == TokenTypes.Digit)
             {
                 var numValor = int.Parse(_currenToken.Lexeme);
                 _currenToken = _lexer.GetNextToken();
-                return numValor;
+                return new NumberLiteralNode {Value = numValor};
 
             }
             else if (_currenToken.Type == TokenTypes.Left_Par)
