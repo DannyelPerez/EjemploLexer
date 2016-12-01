@@ -7,9 +7,10 @@ namespace EjemploLexer.Semantico.Arbol.Sentencia
     public class ReadNode: StatementNode
     {
         public IdNode Variable { get; set; }
-        public override void Interpret()
+
+        public override void ValidSemantic()
         {
-           Parser._variables[Variable.Name] = int.Parse(Console.ReadLine());
+            Variable.EvaluateSemantic();
         }
     }
 }

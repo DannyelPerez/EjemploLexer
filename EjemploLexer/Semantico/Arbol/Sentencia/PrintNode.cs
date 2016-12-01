@@ -6,9 +6,10 @@ namespace EjemploLexer.Semantico.Arbol.Sentencia
     public class PrintNode:StatementNode
     {
         public ExpressionNode Value { get; set; }
-        public override void Interpret()
+
+        public override void ValidSemantic()
         {
-            Console.WriteLine(Value.Evaluate());
+            Value.EvaluateSemantic();
         }
     }
 }

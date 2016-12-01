@@ -178,6 +178,18 @@ namespace EjemploLexer.Sintatico
                 return new NumberLiteralNode {Value = numValor};
 
             }
+            else if (_currenToken.Type == TokenTypes.LIT_STRING)
+            {
+                var stringValue = _currenToken.Lexeme;
+                _currenToken = _lexer.GetNextToken();
+                return new StringLiteral {Value = stringValue};
+            }
+            else if (_currenToken.Type == TokenTypes.LIT_BOOL)
+            {
+                var boolValue = _currenToken.Lexeme == "true";
+                _currenToken = _lexer.GetNextToken();
+                return new BoolLiteral {Value = boolValue};
+            }
             else if (_currenToken.Type == TokenTypes.Left_Par)
             {
                 _currenToken = _lexer.GetNextToken();

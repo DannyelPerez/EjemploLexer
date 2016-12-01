@@ -1,10 +1,20 @@
-﻿namespace EjemploLexer.Semantico.Arbol.Expresion
+﻿using EjemploLexer.Semantico.Tipos;
+
+namespace EjemploLexer.Semantico.Arbol.Expresion
 {
     public class SubNode: BinaryOperatorNode
     {
-        public override int Evaluate()
+        public override Tipo EvaluateSemantic()
         {
-            return LeftOperand.Evaluate() - RightOperand.Evaluate();
+            var ltipo = LeftOperand.EvaluateSemantic();
+            var rtipo = RightOperand.EvaluateSemantic();
+            if (ltipo.GetType() == rtipo.GetType())
+            {
+                if (ltipo is IntTipo)
+                    return ltipo;
+
+            }
+            throw new SemanticException($"No se puede restar entre tipo: {ltipo} y {rtipo}");
         }
     }
 }

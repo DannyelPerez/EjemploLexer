@@ -7,7 +7,7 @@
 
         public override string ToString()
         {
-            return "Lexeme: "+ Lexeme+" Type: "+Type;
+            return "Lexeme: "+ Lexeme+" Tipo: "+Type;
         }
     }
 }

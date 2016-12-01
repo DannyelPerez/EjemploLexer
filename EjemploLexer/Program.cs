@@ -12,14 +12,13 @@ namespace EjemploLexer
     {
         static void Main(string[] args)
         {
-            var lex = new Lexer(@"read a;
-            read b;
-            print a+b;");
+            var hoySi = System.IO.File.ReadAllText(@"C:\Users\danny\Documents\Test\hola.html");
+            var lex = new Lexer(hoySi);
             Parser parser = new Parser(lex);
             var root = parser.Parse();
             foreach (var statementNode in root)
             {
-                statementNode.Interpret();
+                statementNode.ValidSemantic();
             }
             Console.ReadKey();
 

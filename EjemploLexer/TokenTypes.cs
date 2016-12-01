@@ -14,6 +14,8 @@
         FN_STM,
         Left_Par,
         Right_Par,
-        PR_READ
+        PR_READ,
+        LIT_BOOL,
+        LIT_STRING
     }
 }

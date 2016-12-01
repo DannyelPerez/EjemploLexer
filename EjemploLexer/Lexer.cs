@@ -16,6 +16,8 @@ namespace EjemploLexer
             _reserveWords = new Dictionary<string, TokenTypes>();
             _reserveWords.Add("print", TokenTypes.PR_PRINT);
             _reserveWords.Add("read", TokenTypes.PR_READ);
+            _reserveWords.Add("false", TokenTypes.LIT_BOOL);
+            _reserveWords.Add("true", TokenTypes.LIT_BOOL);
             _symbols = new Dictionary<string, TokenTypes>();
             _symbols.Add("+", TokenTypes.OP_SUM);
             _symbols.Add("-", TokenTypes.OP_SUB);
@@ -64,8 +66,29 @@ namespace EjemploLexer
                 return new Token {Type = _symbols[tmp.ToString()],Lexeme = tmp.ToString()};
             }
 
+            if (tmp == '\"')
+            {
+                _currentPointer++;
+                return LiteralString();
+            }
+
             throw new SatanException("Nasty");
         }
+
+         private Token LiteralString()
+         {
+             var lexeme = "\"";
+             var currentSymbol = GetCurrentSymbol();
+             while (currentSymbol != '\"')
+             {
+                 lexeme += currentSymbol;
+                 _currentPointer++;
+                 currentSymbol = GetCurrentSymbol();
+             }
+             _currentPointer++;
+             lexeme += "\"";
+             return new Token {Lexeme = lexeme,Type = TokenTypes.LIT_STRING};
+         }
 
          private Token GetDigit(string lexeme)
          {

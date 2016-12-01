@@ -1,10 +1,21 @@
-﻿namespace EjemploLexer.Semantico.Arbol.Expresion
+﻿using EjemploLexer.Semantico.Tipos;
+
+namespace EjemploLexer.Semantico.Arbol.Expresion
 {
     public class MulNode: BinaryOperatorNode
     {
-        public override int Evaluate()
+        public override Tipo EvaluateSemantic()
         {
-            return LeftOperand.Evaluate() * RightOperand.Evaluate();
+            var ltipo = LeftOperand.EvaluateSemantic();
+            var rtipo = RightOperand.EvaluateSemantic();
+            if (ltipo.GetType() == rtipo.GetType())
+            {
+                if (ltipo is IntTipo || ltipo is BoolTipo)
+                    return ltipo;
+
+            }
+
+           throw new SemanticException($"No se puede multiplicar entre tipo: {ltipo} y {rtipo}");
         }
     }
 }

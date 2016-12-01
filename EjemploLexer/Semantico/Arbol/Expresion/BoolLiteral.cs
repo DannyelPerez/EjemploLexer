@@ -2,13 +2,12 @@
 
 namespace EjemploLexer.Semantico.Arbol.Expresion
 {
-    public class NumberLiteralNode: ExpressionNode
+    public class BoolLiteral: ExpressionNode
     {
-        public int Value { get; set; }
-
+        public bool Value { get; set; }
         public override Tipo EvaluateSemantic()
         {
-            return new IntTipo();
+            return new BoolTipo();
         }
     }
 }
