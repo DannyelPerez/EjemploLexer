@@ -38,7 +38,10 @@ namespace EjemploLexer.Sintatico
         private List<StatementNode> ListaSentencias()
         {
             //Lista_Sentencias->Sentencia Lista_Sentencias
-            if (_currenToken.Type == TokenTypes.ID || _currenToken.Type == TokenTypes.PR_PRINT ||_currenToken.Type == TokenTypes.PR_READ)
+            if (_currenToken.Type == TokenTypes.ID 
+                || _currenToken.Type == TokenTypes.PR_PRINT 
+                ||_currenToken.Type == TokenTypes.PR_READ
+                ||_currenToken.Type == TokenTypes.PR_FOR)
             {
                 var statement = Sentencia();
                 var statementList = ListaSentencias();
@@ -98,7 +101,42 @@ namespace EjemploLexer.Sintatico
 
                 return new ReadNode {Variable = new IdNode {Name = lexemeId} };
             }
-
+            else if (_currenToken.Type == TokenTypes.PR_FOR)
+            {
+                _currenToken = _lexer.GetNextToken();
+                if(_currenToken.Type != TokenTypes.ID)
+                    throw new Exception("Se esperaba un id");
+                var id = _currenToken;
+                _currenToken = _lexer.GetNextToken();
+                if(_currenToken.Type != TokenTypes.OP_EQU)
+                    throw new Exception("Se esperaba un =");
+                _currenToken = _lexer.GetNextToken();
+                var exp1 = Expresion();
+                if(_currenToken.Type != TokenTypes.PR_TO)
+                    throw new Exception("Se esperaba pr to");
+                _currenToken = _lexer.GetNextToken();
+                var exp2 = Expresion();
+                if(_currenToken.Type != TokenTypes.PR_BEGIN)
+                    throw new Exception("Se esperaba pr begin");
+                _currenToken = _lexer.GetNextToken();
+                var ls = ListaSentencias();
+                if(_currenToken.Type != TokenTypes.PR_END)
+                    throw new Exception("Se esperaba end");
+                _currenToken = _lexer.GetNextToken();
+                return new ForNode {Id = new IdNode {Name = id.Lexeme},
+                    FromExp = exp1,
+                    ToExp = exp2,
+                    StatementList = ls
+                };
+            }
+//            else if (_currenToken.Type == TokenTypes.PR_WHILE)
+//            {
+//                
+//            }
+//            else if (_currenToken.Type == TokenTypes.PR_IF)
+//            {
+//                
+//            }
             else
             {
                 throw new Exception("Se esperaba un id o print");

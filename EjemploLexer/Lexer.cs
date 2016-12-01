@@ -18,6 +18,12 @@ namespace EjemploLexer
             _reserveWords.Add("read", TokenTypes.PR_READ);
             _reserveWords.Add("false", TokenTypes.LIT_BOOL);
             _reserveWords.Add("true", TokenTypes.LIT_BOOL);
+            _reserveWords.Add("for", TokenTypes.PR_FOR);
+            _reserveWords.Add("while", TokenTypes.PR_WHILE);
+            _reserveWords.Add("if", TokenTypes.PR_IF);
+            _reserveWords.Add("to", TokenTypes.PR_TO);
+            _reserveWords.Add("end", TokenTypes.PR_END);
+            _reserveWords.Add("begin", TokenTypes.PR_BEGIN);
             _symbols = new Dictionary<string, TokenTypes>();
             _symbols.Add("+", TokenTypes.OP_SUM);
             _symbols.Add("-", TokenTypes.OP_SUB);
@@ -25,6 +31,10 @@ namespace EjemploLexer
             _symbols.Add("/", TokenTypes.OP_DIV);
             _symbols.Add("=", TokenTypes.OP_EQU);
             _symbols.Add(";", TokenTypes.FN_STM);
+            _symbols.Add("(", TokenTypes.PAR_LEFT);
+            _symbols.Add(")", TokenTypes.PAR_RIGHT);
+            _symbols.Add("{", TokenTypes.CB_LEFT);
+            _symbols.Add("}", TokenTypes.CB_RIGHT);
 
 
         }

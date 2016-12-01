@@ -58,6 +58,7 @@
     <Compile Include="Semantico\Arbol\Expresion\SubNode.cs" />
     <Compile Include="Semantico\Arbol\Expresion\SumNode.cs" />
     <Compile Include="Semantico\Arbol\Sentencia\AssignationNode.cs" />
+    <Compile Include="Semantico\Arbol\Sentencia\ForNode.cs" />
     <Compile Include="Semantico\Arbol\Sentencia\PrintNode.cs" />
     <Compile Include="Semantico\Arbol\Sentencia\ReadNode.cs" />
     <Compile Include="Semantico\Arbol\Sentencia\StatementNode.cs" />

@@ -16,6 +16,16 @@
         Right_Par,
         PR_READ,
         LIT_BOOL,
-        LIT_STRING
+        LIT_STRING,
+        PR_FOR,
+        PR_WHILE,
+        PR_IF,
+        PAR_LEFT,
+        PAR_RIGHT,
+        CB_LEFT,
+        CB_RIGHT,
+        PR_TO,
+        PR_END,
+        PR_BEGIN
     }
 }
