@@ -59,9 +59,11 @@
     <Compile Include="Semantico\Arbol\Expresion\SumNode.cs" />
     <Compile Include="Semantico\Arbol\Sentencia\AssignationNode.cs" />
     <Compile Include="Semantico\Arbol\Sentencia\ForNode.cs" />
+    <Compile Include="Semantico\Arbol\Sentencia\IfNode.cs" />
     <Compile Include="Semantico\Arbol\Sentencia\PrintNode.cs" />
     <Compile Include="Semantico\Arbol\Sentencia\ReadNode.cs" />
     <Compile Include="Semantico\Arbol\Sentencia\StatementNode.cs" />
+    <Compile Include="Semantico\Arbol\Sentencia\WhileNode.cs" />
     <Compile Include="Semantico\Tipos\BoolTipo.cs" />
     <Compile Include="Semantico\Tipos\IntTipo.cs" />
     <Compile Include="Semantico\Tipos\StringTipo.cs" />

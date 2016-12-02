@@ -24,6 +24,7 @@ namespace EjemploLexer
             _reserveWords.Add("to", TokenTypes.PR_TO);
             _reserveWords.Add("end", TokenTypes.PR_END);
             _reserveWords.Add("begin", TokenTypes.PR_BEGIN);
+            _reserveWords.Add("else", TokenTypes.PR_ELSE);
             _symbols = new Dictionary<string, TokenTypes>();
             _symbols.Add("+", TokenTypes.OP_SUM);
             _symbols.Add("-", TokenTypes.OP_SUB);

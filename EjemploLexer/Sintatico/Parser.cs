@@ -41,7 +41,9 @@ namespace EjemploLexer.Sintatico
             if (_currenToken.Type == TokenTypes.ID 
                 || _currenToken.Type == TokenTypes.PR_PRINT 
                 ||_currenToken.Type == TokenTypes.PR_READ
-                ||_currenToken.Type == TokenTypes.PR_FOR)
+                ||_currenToken.Type == TokenTypes.PR_FOR
+                ||_currenToken.Type == TokenTypes.PR_WHILE
+                ||_currenToken.Type == TokenTypes.PR_IF)
             {
                 var statement = Sentencia();
                 var statementList = ListaSentencias();
@@ -100,7 +102,7 @@ namespace EjemploLexer.Sintatico
                 _currenToken = _lexer.GetNextToken();
 
                 return new ReadNode {Variable = new IdNode {Name = lexemeId} };
-            }
+            }//For
             else if (_currenToken.Type == TokenTypes.PR_FOR)
             {
                 _currenToken = _lexer.GetNextToken();
@@ -129,14 +131,44 @@ namespace EjemploLexer.Sintatico
                     StatementList = ls
                 };
             }
-//            else if (_currenToken.Type == TokenTypes.PR_WHILE)
-//            {
-//                
-//            }
-//            else if (_currenToken.Type == TokenTypes.PR_IF)
-//            {
-//                
-//            }
+            else if (_currenToken.Type == TokenTypes.PR_WHILE)
+            {
+                _currenToken = _lexer.GetNextToken();
+                var condition = Expresion();
+                if (_currenToken.Type != TokenTypes.PR_BEGIN)
+                    throw new Exception("Se esperaba pr begin");
+                _currenToken = _lexer.GetNextToken();
+                var ls = ListaSentencias();
+                if (_currenToken.Type != TokenTypes.PR_END)
+                    throw new Exception("Se esperaba end");
+                _currenToken = _lexer.GetNextToken();
+                return new WhileNode {Conditional = condition, StatementList = ls};
+            }
+            else if (_currenToken.Type == TokenTypes.PR_IF)
+            {
+                _currenToken = _lexer.GetNextToken();
+                var condition = Expresion();
+                if (_currenToken.Type != TokenTypes.PR_BEGIN)
+                    throw new Exception("Se esperaba pr begin");
+                _currenToken = _lexer.GetNextToken();
+                var lsTrue = ListaSentencias();
+                if (_currenToken.Type != TokenTypes.PR_END)
+                    throw new Exception("Se esperaba end");
+                _currenToken = _lexer.GetNextToken();
+                if(_currenToken.Type != TokenTypes.PR_ELSE)
+                    return new IfNode { Conditional = condition, StatementListTrue = lsTrue };
+                _currenToken = _lexer.GetNextToken();
+                if (_currenToken.Type != TokenTypes.PR_BEGIN)
+                    throw new Exception("Se esperaba pr begin");
+                _currenToken = _lexer.GetNextToken();
+                var lsFalse = ListaSentencias();
+                if (_currenToken.Type != TokenTypes.PR_END)
+                    throw new Exception("Se esperaba end");
+                _currenToken = _lexer.GetNextToken();
+                return new IfNode { Conditional = condition,
+                    StatementListTrue = lsTrue,
+                    StatementListFalse = lsFalse };
+            }
             else
             {
                 throw new Exception("Se esperaba un id o print");
