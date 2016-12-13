@@ -11,5 +11,11 @@ namespace EjemploLexer.Semantico.Arbol.Sentencia
         {
             Value.EvaluateSemantic();
         }
+
+        public override void Interpret()
+        {
+            dynamic value = Value.Interpret();
+            Console.WriteLine(value.Value);
+        }
     }
 }

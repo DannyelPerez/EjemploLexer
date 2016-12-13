@@ -1,4 +1,5 @@
-﻿using EjemploLexer.Semantico.Tipos;
+﻿using EjemploLexer.Interpretacion;
+using EjemploLexer.Semantico.Tipos;
 
 namespace EjemploLexer.Semantico.Arbol.Expresion
 {
@@ -8,6 +9,11 @@ namespace EjemploLexer.Semantico.Arbol.Expresion
         public override Tipo EvaluateSemantic()
         {
             return new StringTipo();
+        }
+
+        public override Value Interpret()
+        {
+            return new StringValue { Value = Value };
         }
     }
 }

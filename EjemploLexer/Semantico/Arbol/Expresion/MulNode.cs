@@ -1,4 +1,5 @@
-﻿using EjemploLexer.Semantico.Tipos;
+﻿using EjemploLexer.Interpretacion;
+using EjemploLexer.Semantico.Tipos;
 
 namespace EjemploLexer.Semantico.Arbol.Expresion
 {
@@ -16,6 +17,13 @@ namespace EjemploLexer.Semantico.Arbol.Expresion
             }
 
            throw new SemanticException($"No se puede multiplicar entre tipo: {ltipo} y {rtipo}");
+        }
+
+        public override Value Interpret()
+        {
+            dynamic leftV = LeftOperand.Interpret();
+            dynamic rightV = RightOperand.Interpret();
+            return new IntValue { Value = leftV.Value * rightV.Value };
         }
     }
 }

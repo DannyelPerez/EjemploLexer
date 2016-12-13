@@ -21,5 +21,10 @@ namespace EjemploLexer.Semantico.Arbol.Sentencia
                     throw new SemanticException($"No se puede asignar {rTipo} a {lTipo}");
             }
         }
+
+        public override void Interpret()
+        {
+            TablaSimbolos.Instance.SetVariableValue(LeftValue.Name,RightValue.Interpret());
+        }
     }
 }

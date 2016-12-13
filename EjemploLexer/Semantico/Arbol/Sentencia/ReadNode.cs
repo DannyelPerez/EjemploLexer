@@ -12,5 +12,10 @@ namespace EjemploLexer.Semantico.Arbol.Sentencia
         {
             Variable.EvaluateSemantic();
         }
+
+        public override void Interpret()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

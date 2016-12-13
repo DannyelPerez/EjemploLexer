@@ -20,6 +20,11 @@ namespace EjemploLexer
             {
                 statementNode.ValidSemantic();
             }
+
+            foreach (var statementNode in root)
+            {
+                statementNode.Interpret();
+            }
             Console.ReadKey();
 
         }

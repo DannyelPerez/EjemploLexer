@@ -26,5 +26,10 @@ namespace EjemploLexer.Semantico.Arbol.Sentencia
                     statementNode.ValidSemantic();
                 }
         }
+
+        public override void Interpret()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -43,6 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interpretacion\BoolValue.cs" />
+    <Compile Include="Interpretacion\IntValue.cs" />
+    <Compile Include="Interpretacion\StringValue.cs" />
+    <Compile Include="Interpretacion\Value.cs" />
     <Compile Include="Lexer.cs" />
     <Compile Include="Lexer.SatanException.cs" />
     <Compile Include="Program.cs" />
