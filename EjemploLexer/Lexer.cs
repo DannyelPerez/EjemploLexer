@@ -88,7 +88,7 @@ namespace EjemploLexer
 
          private Token LiteralString()
          {
-             var lexeme = "\"";
+             var lexeme = "";
              var currentSymbol = GetCurrentSymbol();
              while (currentSymbol != '\"')
              {
@@ -97,7 +97,6 @@ namespace EjemploLexer
                  currentSymbol = GetCurrentSymbol();
              }
              _currentPointer++;
-             lexeme += "\"";
              return new Token {Lexeme = lexeme,Type = TokenTypes.LIT_STRING};
          }
 

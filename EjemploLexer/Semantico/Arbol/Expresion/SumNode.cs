@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using EjemploLexer.Interpretacion;
+﻿using EjemploLexer.Interpretacion;
 using EjemploLexer.Semantico.Tipos;
 
 namespace EjemploLexer.Semantico.Arbol.Expresion
@@ -14,12 +9,10 @@ namespace EjemploLexer.Semantico.Arbol.Expresion
         {
             var ltipo = LeftOperand.EvaluateSemantic();
             var rtipo = RightOperand.EvaluateSemantic();
-            if (ltipo.GetType() == rtipo.GetType())
-            {
-                if (ltipo is IntTipo || ltipo is StringTipo || ltipo is BoolTipo)
-                    return ltipo;
-                
-            }
+            if (ltipo.GetType() != rtipo.GetType())
+                throw new SemanticException($"No se puede sumar entre tipo: {ltipo} y {rtipo}");
+            if (ltipo is IntTipo || ltipo is StringTipo || ltipo is BoolTipo)
+                return ltipo;
             throw new SemanticException($"No se puede sumar entre tipo: {ltipo} y {rtipo}");
         }
 
@@ -27,24 +20,28 @@ namespace EjemploLexer.Semantico.Arbol.Expresion
         {
             var leftV = LeftOperand.Interpret();
             var rightV = RightOperand.Interpret();
-            if (leftV is IntValue)
+            var value = leftV as IntValue;
+            if (value != null)
             {
                 return new IntValue
                 {
-                    Value = ((IntValue)leftV).Value + ((IntValue)rightV).Value
+                    Value = value.Value + ((IntValue)rightV).Value
                 };
             }
 
-            if (leftV is StringValue)
+            var v = leftV as StringValue;
+            if (v != null)
             {
                 return new StringValue
                 {
-                    Value = ((StringValue)leftV).Value + ((StringValue)rightV).Value
+                    Value = v.Value + ((StringValue)rightV).Value
                 };
             }
 
-            throw new NotImplementedException();
-
+            return new BoolValue
+            {
+                Value = ((BoolValue)leftV).Value || ((BoolValue)rightV).Value
+            };
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using EjemploLexer.Interpretacion;
 using EjemploLexer.Semantico.Arbol.Expresion;
 using EjemploLexer.Semantico.Tipos;
 
@@ -22,7 +23,14 @@ namespace EjemploLexer.Semantico.Arbol.Sentencia
 
         public override void Interpret()
         {
-            throw new System.NotImplementedException();
+            var condition = Conditional.Interpret();
+            while (((BoolValue)condition).Value )
+            {
+                foreach (var statementNode in StatementList)
+                {
+                    statementNode.Interpret();
+                }
+            }
         }
     }
 }

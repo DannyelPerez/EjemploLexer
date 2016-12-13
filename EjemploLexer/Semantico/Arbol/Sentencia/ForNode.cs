@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using EjemploLexer.Interpretacion;
 using EjemploLexer.Semantico.Arbol.Expresion;
 using EjemploLexer.Semantico.Tipos;
 
@@ -28,7 +29,19 @@ namespace EjemploLexer.Semantico.Arbol.Sentencia
 
         public override void Interpret()
         {
-            throw new System.NotImplementedException();
+            var from = FromExp.Interpret();
+            var to = ToExp.Interpret();
+            TablaSimbolos.Instance.SetVariableValue(Id.Name, from);
+            while (((IntValue)from).Value <= ((IntValue)to).Value)
+            {
+                foreach (var statementNode in StatementList)
+                {
+                    statementNode.Interpret();
+                }
+                ((IntValue) from).Value += 1;
+                TablaSimbolos.Instance.SetVariableValue(Id.Name,from);
+            }
+            
         }
     }
 }
